@@ -21,7 +21,7 @@ class Form extends CrudComponent
 {
     // ...
 
-    public function registerCrud(): void
+    public function registerCrud()
     {
         $this->beforeCreate(function (array $input) {
             return array_merge($input, [
