@@ -1,0 +1,58 @@
+<?php
+
+namespace App\Http\Livewire\Dummies;
+
+use App\Models\Dummy;
+use App\Http\Livewire\CrudComponent;
+
+class Form extends CrudComponent
+{
+    public Dummy $dummy;
+
+    public $state = [];
+
+    protected $rules = [
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['nullable', 'email', 'max:255'],
+        'phone' => ['nullable', 'string', 'max:255'],
+    ];
+
+    public function mount(Dummy $dummy)
+    {
+        if ($dummy->exists) {
+            $this->dummy = $dummy;
+            $this->state = $dummy->toArray();
+            $this->setTarget('update');
+        }
+
+        $this->registerCrud();
+    }
+
+    public function registerCrud()
+    {
+        // $this->authorizeCrud(Dummy::class, 'dummy');
+
+        $this->onCreate(function ($component, array $data) {
+            Dummy::create($data);
+
+            $component->redirectRoute('dummies.index');
+        });
+
+        $this->onUpdate(function ($component, array $data) {
+            $this->dummy->update($data);
+
+            $component->redirectRoute('dummies.index');
+        });
+
+        $this->onDelete(function ($component) {
+            $this->dummy->delete();
+
+            $component->redirectRoute('dummies.index');
+        });
+    }
+
+    public function render()
+    {
+        return view('livewire.dummies.form');
+    }
+}

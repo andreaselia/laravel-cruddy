@@ -1,0 +1,43 @@
+{
+    "name": "notano/laravel-cruddy",
+    "description": "Livewire Cruddy helps speed up the development of Laravel apps using the TALL stack.",
+    "keywords": ["laravel", "livewire", "cruddy", "package", "crud", "policies"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Andreas Elia",
+            "email": "andreas@notano.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8.0",
+        "illuminate/support": "^8.0|^9.0",
+        "illuminate/database": "^8.0|^9.0",
+        "illuminate/collections": "^8.0|^9.0",
+        "illuminate/http": "^8.0|^9.0",
+        "illuminate/view": "^8.0|^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Notano\\Cruddy\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Notano\\Cruddy\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Notano\\Cruddy\\CruddyServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require-dev": {
+        "orchestra/testbench": "6.0",
+        "phpunit/phpunit": "^9.5"
+    }
+}
