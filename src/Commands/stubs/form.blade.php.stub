@@ -31,9 +31,11 @@
                         {{ __($target) }}
                     </x-jet-button>
 
-                    <x-jet-danger-button x-on:click="event.preventDefault(); confirm('Are you sure you want to delete this?') ? $wire.delete() : null">
-                        {{ __('Delete') }}
-                    </x-jet-danger-button>
+                    @if ($this->isTarget('update'))
+                        <x-jet-danger-button x-on:click="event.preventDefault(); confirm('{{ __('Are you sure you want to delete this?') }}') ? $wire.delete() : null">
+                            {{ __('Delete') }}
+                        </x-jet-danger-button>
+                    @endif
                 </div>
             </form>
         </x-card>

@@ -23,11 +23,7 @@ class Form extends CrudComponent
 
     public function registerCrud()
     {
-        $this->beforeCreate(function (array $input) {
-            return array_merge($input, [
-                'uuid' => Str::uuid(),
-            ]);
-        })->onCreate(function ($component, array $data) {
+        $this->onCreate(function ($component, array $data) {
             $client = Client::create($data);
 
             $component->redirectRoute('clients.show', $client);
@@ -35,7 +31,9 @@ class Form extends CrudComponent
 
         $this->onUpdate(function ($component, array $data) {
             $this->client->update($data);
-        })->redirectRoute('clients.show', $this->client);
+
+            $component->redirectRoute('clients.show', $client);
+        });
 
         $this->onDelete(function ($component) {
             $this->client->delete();
@@ -44,6 +42,42 @@ class Form extends CrudComponent
         });
     }
 }
+```
+
+## Methods
+
+### beforeCreate/beforeUpdate
+
+These methods allow you to modify the data before inserting or updating.
+
+```php
+$this->beforeCreate(function (array $input) {
+    return array_merge($input, [
+        'uuid' => Str::uuid(),
+    ]);
+})->onCreate(function ($component, array $data) {
+    // ...
+});
+
+$this->beforeUpdate(function (array $input) {
+    return array_merge($input, [
+        'slug' => Str::slug($input['title']),
+    ]);
+})->onUpdate(function ($component, array $data) {
+    // ...
+});
+```
+
+### redirect, redirectRoute, redirectAction
+
+This chained method allows you to redirect the user without having to do it inside the onCreate/onUpdate/onDelete methods.
+
+These methods follow the same usage as the Livewire redirects.
+
+```php
+$this->onUpdate(function ($component, array $data) {
+    $this->client->update($data);
+})->redirectRoute('clients.show', $this->client);
 ```
 
 ## Contributing
