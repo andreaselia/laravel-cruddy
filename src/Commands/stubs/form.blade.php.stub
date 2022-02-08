@@ -1,6 +1,6 @@
 <div>
     <x-slot name="header">
-        {{ __(sprintf('%s Contact', ucfirst($target))) }}
+        {{ __(sprintf('%s Dummy', ucfirst($target))) }}
     </x-slot>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
