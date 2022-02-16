@@ -51,7 +51,7 @@ class CrudComponent extends Component
         $onClosure($this, $validatedData);
 
         if ($this->flashMessages) {
-            // todo: flash messages
+            session()->flash('status', $this->flashMessages['create']);
         }
 
         if ($this->redirection) {
@@ -92,7 +92,7 @@ class CrudComponent extends Component
         $onClosure($this, $validatedData);
 
         if ($this->flashMessages) {
-            // todo: flash messages
+            session()->flash('status', $this->flashMessages['update']);
         }
 
         if ($this->redirection) {
@@ -116,7 +116,7 @@ class CrudComponent extends Component
         $closure($this);
 
         if ($this->flashMessages) {
-            // todo: flash messages
+            session()->flash('status', $this->flashMessages['delete']);
         }
 
         if ($this->redirection) {
