@@ -50,6 +50,10 @@ class CrudComponent extends Component
         $onClosure = unserialize($this->callbacks['onCreate'])->getClosure();
         $onClosure($this, $validatedData);
 
+        if ($this->flashMessages) {
+            // todo: flash messages
+        }
+
         if ($this->redirection) {
             $this->redirectTo = $this->redirection;
         }
@@ -87,6 +91,10 @@ class CrudComponent extends Component
         $onClosure = unserialize($this->callbacks['update'])->getClosure();
         $onClosure($this, $validatedData);
 
+        if ($this->flashMessages) {
+            // todo: flash messages
+        }
+
         if ($this->redirection) {
             $this->redirectTo = $this->redirection;
         }
@@ -106,6 +114,10 @@ class CrudComponent extends Component
         $closure = unserialize($this->callbacks['delete'])->getClosure();
 
         $closure($this);
+
+        if ($this->flashMessages) {
+            // todo: flash messages
+        }
 
         if ($this->redirection) {
             $this->redirectTo = $this->redirection;
