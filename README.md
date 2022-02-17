@@ -70,7 +70,7 @@ $this->beforeUpdate(function (array $input) {
 
 ### setupFlashMessages
 
-This method allows you to automatically flash messages relevant to the creation/update/deletion of a record. The messages can also be customised.
+This method allows you to automatically flash messages relevant to the creation/update/deletion of a record. The messages can also be customised. All messages are flashed with the "status" key.
 
 ```php
 // Default:
