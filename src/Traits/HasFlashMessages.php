@@ -6,7 +6,7 @@ trait HasFlashMessages
 {
     public array $flashMessages = [];
 
-    public function setupFlashMessages(array $messages, string $type = 'record')
+    public function setupFlashMessages(array $messages = [], string $type = 'record')
     {
         if (empty($messages)) {
             $this->flashMessages = [

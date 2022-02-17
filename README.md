@@ -68,6 +68,25 @@ $this->beforeUpdate(function (array $input) {
 });
 ```
 
+### setupFlashMessages
+
+This method allows you to automatically flash messages relevant to the creation/update/deletion of a record. The messages can also be customised.
+
+```php
+// Default:
+$this->setupFlashMessages();
+
+// Replace "record" with a custom type:
+$this->setupFlashMessages([], 'user');
+
+// Custom messages:
+$this->setupFlashMessages([
+    'create' => 'The record may have been created successfully.',
+    'update' => 'The record may have been updated successfully.',
+    'delete' => 'The record may have been deleted successfully.',
+]);
+```
+
 ### redirect, redirectRoute, redirectAction
 
 This chained method allows you to redirect the user without having to do it inside the onCreate/onUpdate/onDelete methods.
