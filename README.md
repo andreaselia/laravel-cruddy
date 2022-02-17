@@ -32,7 +32,7 @@ class Form extends CrudComponent
         $this->onUpdate(function ($component, array $data) {
             $this->client->update($data);
 
-            $component->redirectRoute('clients.show', $client);
+            $component->redirectRoute('clients.show', $this->client);
         });
 
         $this->onDelete(function ($component) {
