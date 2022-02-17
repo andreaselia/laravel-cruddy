@@ -13,10 +13,11 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class CrudComponent extends Component
 {
     use AuthorizesRequests,
-        HasFormTarget,
-        HasRedirects;
+        HasFormTarget;
 
-    public $callbacks = [];
+    public array $callbacks = [];
+
+    public array $state = [];
 
     protected function beforeCreate(Closure $closure)
     {

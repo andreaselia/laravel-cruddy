@@ -14,89 +14,116 @@ composer require notano/laravel-cruddy
 
 ## Component
 
-Adding the new component to an existing component is as easy as:
+Making an existing component Cruddy friendly is as easy as extending `CrudComponent` and consuming the methods documented below. Here is a guide component:
 
 ```php
+<?php
+
+namespace App\Http\Livewire\Clients;
+
 class Form extends CrudComponent
 {
-    // ...
-
-    public function registerCrud()
+    public function mount(Client $client)
     {
-        $this->onCreate(function ($component, array $data) {
-            $client = Client::create($data);
+        if ($client->exists) {
+            $this->client = $client;
+            $this->state = $client->toArray();
+            $this->setTarget('update');
+        }
+    }
 
-            $component->redirectRoute('clients.show', $client);
-        });
+    public function create(array $data)
+    {
+        Client::create($data);
 
-        $this->onUpdate(function ($component, array $data) {
-            $this->client->update($data);
+        $this->redirectRoute('clients.index');
+    }
 
-            $component->redirectRoute('clients.show', $this->client);
-        });
+    public function update(array $data)
+    {
+        $this->client->update($data);
 
-        $this->onDelete(function ($component) {
-            $this->client->delete();
+        $this->redirectRoute('clients.edit', $this->client);
+    }
 
-            $component->redirectRoute('clients.index');
-        });
+    public function delete()
+    {
+        $this->client->delete();
+
+        $this->redirectRoute('clients.index');
     }
 }
 ```
 
 ## Methods
 
-### beforeCreate/beforeUpdate
-
-These methods allow you to modify the data before inserting or updating.
-
-```php
-$this->beforeCreate(function (array $input) {
-    return array_merge($input, [
-        'uuid' => Str::uuid(),
-    ]);
-})->onCreate(function ($component, array $data) {
-    // ...
-});
-
-$this->beforeUpdate(function (array $input) {
-    return array_merge($input, [
-        'slug' => Str::slug($input['title']),
-    ]);
-})->onUpdate(function ($component, array $data) {
-    // ...
-});
-```
-
 ### setupFlashMessages
 
 This method allows you to automatically flash messages relevant to the creation/update/deletion of a record. The messages can also be customised. All messages are flashed with the "status" key.
 
 ```php
-// Default:
-$this->setupFlashMessages();
+public function mount(Post $post)
+{
+    // Default:
+    $this->setupFlashMessages();
 
-// Replace "record" with a custom type:
-$this->setupFlashMessages([], 'user');
+    // Replace "record" with a custom type:
+    $this->setupFlashMessages([], 'user');
 
-// Custom messages:
-$this->setupFlashMessages([
-    'create' => 'The record may have been created successfully.',
-    'update' => 'The record may have been updated successfully.',
-    'delete' => 'The record may have been deleted successfully.',
-]);
+    // Custom messages:
+    $this->setupFlashMessages([
+        'create' => 'The record may have been created successfully.',
+        'update' => 'The record may have been updated successfully.',
+        'delete' => 'The record may have been deleted successfully.',
+    ]);
+}
 ```
 
-### redirect, redirectRoute, redirectAction
+### beforeCreate/beforeUpdate
 
-This chained method allows you to redirect the user without having to do it inside the onCreate/onUpdate/onDelete methods.
-
-These methods follow the same usage as the Livewire redirects.
+These methods allow you to modify the data before inserting or updating.
 
 ```php
-$this->onUpdate(function ($component, array $data) {
+public function beforeCreate(array $input)
+{
+    return array_merge($input, [
+        'uuid' => Str::uuid(),
+    ]);
+}
+
+public function beforeUpdate(array $input)
+{
+    return array_merge($input, [
+        'slug' => Str::slug($input['title']),
+    ]);
+}
+```
+
+### create/update/delete
+
+These methods are the main ones for all CRUD Form components.
+
+```php
+public function create(array $data)
+{
+    Client::create($data);
+
+    $this->redirectRoute('clients.index');
+}
+
+public function update(array $data)
+{
     $this->client->update($data);
-})->redirectRoute('clients.show', $this->client);
+
+    $this->redirectRoute('clients.edit', $this->client);
+}
+
+public function delete()
+{
+    $this->client->delete();
+
+    $this->redirectRoute('clients.index');
+}
 ```
 
 ## Contributing
