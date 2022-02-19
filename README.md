@@ -32,21 +32,21 @@ class Form extends CrudComponent
         }
     }
 
-    public function create(array $data)
+    public function onCreate(array $data)
     {
         Client::create($data);
 
         $this->redirectRoute('clients.index');
     }
 
-    public function update(array $data)
+    public function onUpdate(array $data)
     {
         $this->client->update($data);
 
         $this->redirectRoute('clients.edit', $this->client);
     }
 
-    public function delete()
+    public function onDelete()
     {
         $this->client->delete();
 
@@ -99,26 +99,26 @@ public function beforeUpdate(array $input)
 }
 ```
 
-### create/update/delete
+### onCreate/onUpdate/onDelete
 
 These methods are the main ones for all CRUD Form components.
 
 ```php
-public function create(array $data)
+public function onCreate(array $data)
 {
     Client::create($data);
 
     $this->redirectRoute('clients.index');
 }
 
-public function update(array $data)
+public function onUpdate(array $data)
 {
     $this->client->update($data);
 
     $this->redirectRoute('clients.edit', $this->client);
 }
 
-public function delete()
+public function onDelete()
 {
     $this->client->delete();
 
