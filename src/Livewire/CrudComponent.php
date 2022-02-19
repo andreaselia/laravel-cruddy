@@ -2,12 +2,9 @@
 
 namespace Notano\Cruddy\Livewire;
 
-use Closure;
 use Livewire\Component;
-use App\Traits\HasFormTarget;
-use Notano\Cruddy\Traits\HasRedirects;
+use Notano\Cruddy\Traits\HasFormTarget;
 use Illuminate\Support\Facades\Validator;
-use Laravel\SerializableClosure\SerializableClosure;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class CrudComponent extends Component
@@ -19,109 +16,88 @@ class CrudComponent extends Component
 
     public array $state = [];
 
-    protected function beforeCreate(Closure $closure)
+    public array $rules = [];
+
+    public array $flashMessages = [];
+
+    public function beforeCreate(array $inputData): array
     {
-        $serialized = serialize(new SerializableClosure($closure));
-
-        $this->callbacks['beforeCreate'] = $serialized;
-
-        return $this;
+        return $inputData;
     }
 
-    protected function onCreate(Closure $closure)
+    public function onCreate(array $validatedData)
     {
-        $serialized = serialize(new SerializableClosure($closure));
+        return $validatedData;
+    }
 
-        $this->callbacks['onCreate'] = $serialized;
-
-        return $this;
+    public function afterCreate()
+    {
+        //
     }
 
     public function create()
     {
-        $inputData = $this->state;
-
-        if (isset($this->callbacks['beforeCreate'])) {
-            $beforeClosure = unserialize($this->callbacks['beforeCreate'])->getClosure();
-            $inputData = $beforeClosure($inputData);
-        }
+        $inputData = $this->beforeCreate($this->state);
 
         $validatedData = Validator::make($inputData, $this->rules)->validate();
 
-        $onClosure = unserialize($this->callbacks['onCreate'])->getClosure();
-        $onClosure($this, $validatedData);
+        $this->onCreate($validatedData);
 
         if ($this->flashMessages) {
             session()->flash('status', $this->flashMessages['create']);
         }
 
-        if ($this->redirection) {
-            $this->redirectTo = $this->redirection;
-        }
+        $this->afterCreate();
     }
 
-    protected function beforeUpdate(Closure $closure)
+    public function beforeUpdate(array $inputData)
     {
-        $serialized = serialize(new SerializableClosure($closure));
-
-        $this->callbacks['beforeUpdate'] = $serialized;
-
-        return $this;
+        return $inputData;
     }
 
-    protected function onUpdate(Closure $closure)
+    public function onUpdate(array $validatedData)
     {
-        $serialized = serialize(new SerializableClosure($closure));
+        return $validatedData;
+    }
 
-        $this->callbacks['update'] = $serialized;
-
-        return $this;
+    public function afterUpdate()
+    {
+        //
     }
 
     public function update()
     {
-        $inputData = $this->state;
-
-        if (isset($this->callbacks['beforeUpdate'])) {
-            $beforeClosure = unserialize($this->callbacks['beforeUpdate'])->getClosure();
-            $inputData = $beforeClosure($inputData);
-        }
+        $inputData = $this->beforeUpdate($this->state);
 
         $validatedData = Validator::make($inputData, $this->rules)->validate();
 
-        $onClosure = unserialize($this->callbacks['update'])->getClosure();
-        $onClosure($this, $validatedData);
+        $this->onUpdate($validatedData);
 
         if ($this->flashMessages) {
             session()->flash('status', $this->flashMessages['update']);
         }
 
-        if ($this->redirection) {
-            $this->redirectTo = $this->redirection;
-        }
+        $this->afterUpdate();
     }
 
-    protected function onDelete(Closure $closure)
+    public function onDelete()
     {
-        $serialized = serialize(new SerializableClosure($closure));
+        //
+    }
 
-        $this->callbacks['delete'] = $serialized;
-
-        return $this;
+    public function afterDelete()
+    {
+        //
     }
 
     public function delete()
     {
-        $closure = unserialize($this->callbacks['delete'])->getClosure();
-
-        $closure($this);
+        $this->onDelete();
 
         if ($this->flashMessages) {
             session()->flash('status', $this->flashMessages['delete']);
         }
 
-        if ($this->redirection) {
-            $this->redirectTo = $this->redirection;
-        }
+        $this->afterDelete();
     }
 }

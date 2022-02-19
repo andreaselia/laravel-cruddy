@@ -13,7 +13,7 @@ trait HasFormTarget
         'update',
     ];
 
-    public function setTarget(string $target)
+    public function setTarget(string $target): void
     {
         if (! in_array($target, $this->targets)) {
             throw new InvalidFormTarget;
