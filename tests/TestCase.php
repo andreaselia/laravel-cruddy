@@ -2,6 +2,7 @@
 
 namespace Notano\Cruddy\Tests;
 
+use Livewire\LivewireServiceProvider;
 use Notano\Cruddy\CruddyServiceProvider;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
@@ -16,6 +17,7 @@ class TestCase extends BaseTestCase
     {
         return [
             CruddyServiceProvider::class,
+            LivewireServiceProvider::class,
         ];
     }
 
