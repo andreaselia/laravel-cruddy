@@ -32,11 +32,6 @@ class CrudComponent extends Component
         return $validatedData;
     }
 
-    public function afterCreate()
-    {
-        //
-    }
-
     public function create()
     {
         $inputData = $this->beforeCreate($this->state);
@@ -52,6 +47,11 @@ class CrudComponent extends Component
         $this->afterCreate();
     }
 
+    public function afterCreate()
+    {
+        //
+    }
+
     public function beforeUpdate(array $inputData)
     {
         return $inputData;
@@ -60,11 +60,6 @@ class CrudComponent extends Component
     public function onUpdate(array $validatedData)
     {
         return $validatedData;
-    }
-
-    public function afterUpdate()
-    {
-        //
     }
 
     public function update()
@@ -82,18 +77,25 @@ class CrudComponent extends Component
         $this->afterUpdate();
     }
 
-    public function onDelete()
+    public function afterUpdate()
     {
         //
     }
 
-    public function afterDelete()
+    public function beforeDelete()
+    {
+        //
+    }
+
+    public function onDelete()
     {
         //
     }
 
     public function delete()
     {
+        $this->beforeDelete();
+
         $this->onDelete();
 
         if ($this->flashMessages) {
@@ -101,5 +103,10 @@ class CrudComponent extends Component
         }
 
         $this->afterDelete();
+    }
+
+    public function afterDelete()
+    {
+        //
     }
 }
