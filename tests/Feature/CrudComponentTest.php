@@ -11,16 +11,16 @@ class CrudComponentTest extends TestCase
 {
     public function test_before_create()
     {
+        $this->assertTrue(true);
+    }
+
+    public function test_on_create()
+    {
         Livewire::test(Form::class)
             ->set('state.title', 'Foo')
             ->call('create');
 
         $this->assertTrue(Post::whereTitle('Foo')->exists());
-    }
-
-    public function test_on_create()
-    {
-        $this->assertTrue(true);
     }
 
     public function test_before_update()
@@ -30,11 +30,25 @@ class CrudComponentTest extends TestCase
 
     public function test_on_update()
     {
-        $this->assertTrue(true);
+        $post = Post::factory()->create([
+            'title' => 'Blablabla',
+            'slug' => 'blablabla',
+        ]);
+
+        Livewire::test(Form::class, ['post' => $post])
+            ->set('state.title', 'Bar')
+            ->call('update');
+
+        $this->assertTrue(Post::whereTitle('Bar')->exists());
     }
 
     public function test_on_delete()
     {
-        $this->assertTrue(true);
+        $post = Post::factory()->create();
+
+        Livewire::test(Form::class, ['post' => $post])
+            ->call('delete');
+
+        $this->assertDatabaseMissing('posts', ['id' => $post->id]);
     }
 }
