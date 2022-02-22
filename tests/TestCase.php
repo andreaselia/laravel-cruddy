@@ -3,8 +3,9 @@
 namespace Notano\Cruddy\Tests;
 
 use Notano\Cruddy\CruddyServiceProvider;
+use Orchestra\Testbench\TestCase as BaseTestCase;
 
-class TestCase extends \Orchestra\Testbench\TestCase
+class TestCase extends BaseTestCase
 {
     public function setUp(): void
     {
