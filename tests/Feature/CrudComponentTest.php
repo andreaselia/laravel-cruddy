@@ -9,11 +9,6 @@ use Notano\Cruddy\Tests\Fixtures\Post;
 
 class CrudComponentTest extends TestCase
 {
-    public function test_before_create()
-    {
-        $this->assertTrue(true);
-    }
-
     public function test_on_create()
     {
         Livewire::test(Form::class)
@@ -21,11 +16,6 @@ class CrudComponentTest extends TestCase
             ->call('create');
 
         $this->assertTrue(Post::whereTitle('Foo')->exists());
-    }
-
-    public function test_before_update()
-    {
-        $this->assertTrue(true);
     }
 
     public function test_on_update()
