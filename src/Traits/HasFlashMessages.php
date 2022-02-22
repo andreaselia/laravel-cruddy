@@ -8,23 +8,23 @@ trait HasFlashMessages
 
     public function setupFlashMessages(array $messages = [], string $type = 'record')
     {
-        if (empty($messages)) {
-            $this->flashMessages = [
-                'create' => "The $type has been created successfully.",
-                'update' => "The $type has been updated successfully.",
-                'delete' => "The $type has been deleted successfully.",
-            ];
-
-            return;
+        if ($messages) {
+            $this->validateCustomFlashMessages($messages);
         }
 
-        $this->validateCustomFlashMessages($messages);
+        $this->flashMessages = array_merge([
+            'create' => "The $type has been created successfully.",
+            'update' => "The $type has been updated successfully.",
+            'delete' => "The $type has been deleted successfully.",
+        ], $messages);
     }
 
     protected function validateCustomFlashMessages(array $messages)
     {
-        if (array_keys($messages) !== ['create', 'update', 'delete']) {
-            throw new \Exception("The flash messages must be an array with keys 'create', 'update', and 'delete'.");
+        foreach ($messages as $key => $message) {
+            if (! in_array($key, ['create', 'update', 'delete'])) {
+                throw new \Exception("The flash messages must be an array containing keys of 'create', 'update', and 'delete' only.");
+            }
         }
 
         return $messages;
