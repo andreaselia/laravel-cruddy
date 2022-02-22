@@ -6,19 +6,21 @@ use Livewire\Component;
 use Notano\Cruddy\Traits\HasFormTarget;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Notano\Cruddy\Traits\HasFlashMessages;
+use Notano\Cruddy\Traits\HasModal;
 
 class CrudComponent extends Component
 {
     use AuthorizesRequests,
-        HasFormTarget;
+        HasFormTarget,
+        HasFlashMessages,
+        HasModal;
 
     public array $callbacks = [];
 
     public array $state = [];
 
     public array $rules = [];
-
-    public array $flashMessages = [];
 
     public function beforeCreate(array $inputData): array
     {
